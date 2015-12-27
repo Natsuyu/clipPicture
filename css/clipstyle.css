@@ -1,0 +1,127 @@
+@charset "UTF-8";
+#cover {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0; }
+  #cover #set {
+    width: 615px;
+    height: 550px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -225px;
+    margin-left: -307px;
+    background-color: #fff;
+    border-radius: 5px; }
+    #cover #set .layer-title {
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      background-color: #008BE7;
+      height: 42px;
+      line-height: 42px;
+      font-size: 20px;
+      border-radius: 5px 5px 0 0; }
+      #cover #set .layer-title #close {
+        line-height: 42px;
+        position: absolute;
+        right: 15px;
+        cursor: pointer;
+        font-size: 25px; }
+    #cover #set .layer-content {
+      width: 360px;
+      height: 360px;
+      border-right: 1px solid #F2F2F2;
+      border-bottom: 1px solid #F2F2F2;
+      margin-top: 20px;
+      margin-left: 10px;
+      position: relative; }
+      #cover #set .layer-content .canvas {
+        display: block;
+        position: absolute;
+        z-index: 99;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0; }
+      #cover #set .layer-content .getfile {
+        z-index: 100; }
+        #cover #set .layer-content .getfile .file {
+          position: absolute;
+          width: 120px;
+          height: 35px;
+          top: 50%;
+          left: 50%;
+          margin-top: -17px;
+          margin-left: -60px;
+          text-decoration: none;
+          color: #8D8D8D;
+          border: 1px solid #F2F2F2;
+          text-align: center;
+          line-height: 35px;
+          z-index: 99;
+          border-radius: 3px;
+          cursor: pointer; }
+        #cover #set .layer-content .getfile #file {
+          opacity: 0;
+          z-index: 100; }
+        #cover #set .layer-content .getfile a.file:after {
+          content: "只支持JPG, PNG, GIF, 大小不超过5M";
+          position: absolute;
+          top: 100%;
+          left: -50px;
+          opacity: 1;
+          width: 220px;
+          font-size: 10px; }
+    #cover #set #preview {
+      width: 235px;
+      height: 360px;
+      box-sizing: border-box;
+      border-bottom: 1px solid #F2F2F2;
+      position: absolute;
+      right: 10px;
+      top: 63px;
+      color: #8D8D8D; }
+      #cover #set #preview .wrap {
+        float: left;
+        width: 100%;
+        margin: 0 auto 15px; }
+        #cover #set #preview .wrap canvas {
+          display: block;
+          margin: auto; }
+      #cover #set #preview span {
+        width: 100%;
+        display: block;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 14px; }
+    #cover #set .set-footer {
+      width: 100%;
+      height: 80px;
+      position: absolute;
+      bottom: 18px;
+      left: 0; }
+      #cover #set .set-footer span {
+        position: absolute;
+        width: 120px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        color: #fff;
+        left: 50%;
+        top: 50%;
+        margin-top: -40px;
+        border-radius: 3px;
+        cursor: pointer; }
+      #cover #set .set-footer #cut {
+        background-color: #45ADE6;
+        margin-left: -130px; }
+      #cover #set .set-footer #cancel {
+        margin-right: -130px;
+        background-color: #AFB1C1; }
+
+/*# sourceMappingURL=upstyle.css.map */

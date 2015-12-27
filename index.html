@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>picture catch test</title>
+	<link rel="stylesheet" type="text/css" href="css/upstyle.css">
+	<script type="text/javascript" src="js/cropImage.js"></script>
+</head>
+<body>
+<img id="test" style="width:100px; height:100px;display:block;">
+<button id="up">点我！</button>
+	<div id="cover">
+		<div class="set" id="set">
+			<div class="layer-title">头像设置<span class="close" id="close">&times;</span></div>
+			<div class="layer-content" id="layer-content">
+				<canvas class="canvas" id="canvas"></canvas>
+				<canvas class="canvas" id="coverfloor"></canvas>
+				<div class="canvas getfile"><input type="file" class="file" id="file"><a href="javascript:void(0);" class="file">选择图片</a></div>
+			</div>
+			<div id="preview">
+				<span class="title-word">预览</span>
+				<div class="wrap">
+					<canvas id="big" width="100" height="100"></canvas>
+					<span class="ctx">100px * 100px</span>
+				</div>
+				<div class="wrap">
+					<canvas id="mid" width="50" height="50"></canvas>
+					<span class="ctx">50px * 50px</span>
+				</div>
+				<div class="wrap">
+					<canvas id="small" width="30" height="30"></canvas>
+					<span class="ctx">30px * 30px</span>
+				</div>
+			</div>
+			<input type="file" class="refile" id="refile"><a href="javascript:void(0);" class="refile">重新上传</a>
+			<span id="rotate">90°旋转</span>
+			<div class="set-footer"><span id="cut">确定</span> <span id="cancel">取消</span></div>
+		</div>
+		</div>
+	<script type="text/javascript">
+		var img = document.getElementById("test");
+		var btn = document.getElementById("submit");
+		var file = document.getElementById("file");
+		var set = document.getElementById("set");
+		var refile = document.getElementById("refile");
+
+		clipPic("up","test",function(){},50);
+		// clipPic("up","test",function(){},50);
+
+	</script>
+</body>
+</html>
