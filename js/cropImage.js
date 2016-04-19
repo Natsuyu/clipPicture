@@ -50,7 +50,7 @@ var fiveM = 1024*1024*5;   //5M
 var num;
 
 canvas = getid("canvas");
-cover = getid("clipcover");
+cover = getid("cover");
 floor = getid("coverfloor");
 set = getid("set");
 view_big = getid("big");
@@ -62,7 +62,6 @@ rotate = getid("rotate");
 cut = getid("cut");
 clo_btn = getid("close");
 cancel=getid("cancel");
-cover=getid("cover");
 
 canvas.width = canW;
 canvas.height = canH;
@@ -77,11 +76,12 @@ setTimeout(function(){
     addEvent("click",rotateDeg,rotate);
     addEvent("click",close,clo_btn);
     addEvent("click",close,cancel);
-    addEvent("resize",adjust);
 },1000);
     
 function show () {
     cover.style.cssText="display:block;";
+    canvas.style.cssText="z-index:100;";
+    floor.style.cssText="z-index:99;";
 }
 function getPic(File){
     
@@ -125,8 +125,6 @@ function getPic(File){
 }
 
 function close(){     //关闭set框
-    canvas.style.cssText="z-index:99;";
-    floor.style.cssText="z-index:99;";
     cover.style.cssText="display:none;";
     file.files[0]=refile.files[0]="";
     
@@ -142,20 +140,12 @@ function output(){
     }
     close();
 }
-function adjust(){
-    canL = canvas.offsetLeft + canvas.offsetParent.offsetLeft + set.offsetLeft ;
-    canT = canvas.offsetTop + canvas.offsetParent.offsetTop + set.offsetTop ; 
-    rx = draw.rect.x + canL; 
-    ry = draw.rect.y + canT;
-    dragx=draw.rect.drag.x+canL;dragy=canT+draw.rect.drag.y;
-    console.log(canL, canT);
-}
+
 function init(){ 
     num=0;
     addEvent("mousedown",mouseDown);
     addEvent("mouseup",mouseUp);
     addEvent("mousemove",mouseMove);
-    addEvent("resize",adjust);
 
     canvas.style.cssText = "z-index:1100;";
     floor.style.cssText = "z-index:1101;";
@@ -170,6 +160,8 @@ function init(){
     midctx = view_mid.getContext("2d");
     smallctx = view_small.getContext("2d");
     
+    ctx.imageSmoothingEnabled = true;ctx2.imageSmoothingEnabled = true;
+
     ctx.clearRect(0,0,canW,canW);
     ctx2.clearRect(0,0,canW,canW);
 
@@ -242,7 +234,7 @@ function canMove()  //判断鼠标是否在选框区
 function mouseDown(e){
     mx = (e.clientX || e.pageX)+document.body.scrollLeft;
     my = (e.clientY || e.pageY)+document.body.scrollTop;
-    console.log(mx,my);
+
     candrag = canDrag();
     if(candrag == 1) canmove = 0;
     else canmove = canMove();
@@ -257,6 +249,7 @@ function mouseUp(e){
 function mouseMove(e){
     mx = (e.clientX || e.pageX)+document.body.scrollLeft;
     my = (e.clientY || e.pageY)+document.body.scrollTop;
+    
     if(canDrag()) floor.style.cursor = "nw-resize";
     else if(canMove()) floor.style.cursor = "move";
     else floor.style.cursor = "auto";
@@ -318,15 +311,33 @@ dragObj.prototype.init = function(father){
     dragx=this.x+canL;dragy=canT+this.y;dragw=dragh=this.r*2;
 }
 dragObj.prototype.draw = function(father){
+    //************the first version --- with jag but more reliable ..?*************
+    // ctx2.save();
+    // ctx2.fillStyle = "#fff";
+    // ctx2.strokeStyle = "#000";
+    // ctx2.beginPath();
+    // ctx2.arc(this.x + this.r,this.y+this.r,this.r,0,Math.PI*2,false);
+    // ctx2.stroke();
+    // ctx2.clip();
+    // ctx2.fillRect(0,0,canW,canH);
+    // ctx2.restore();
+    //****************************************************************************
+
+    //************the second version --- without jag on chrome but it seems...0 0*************
     ctx2.save();
-    ctx2.fillStyle = "#fff";
-    ctx2.strokeStyle = "#000";
+    ctx2.fillStyle = "rgba(255,255,255,0)";
+    ctx2.fillRect(0,0,canW,canH);
+    ctx2.globalCompositeOperation = "destination-out";
     ctx2.beginPath();
     ctx2.arc(this.x + this.r,this.y+this.r,this.r,0,Math.PI*2,false);
+    ctx2.closePath();
+    ctx2.strokeStyle = "#000";
     ctx2.stroke();
-    ctx2.clip();
-    ctx2.fillRect(0,0,canW,canH);
+    ctx2.fillStyle="#fff";
+    ctx2.fill();
+
     ctx2.restore();
+    //****************************************************************************
 }
 dragObj.prototype.move = function(father)
 {
@@ -369,13 +380,28 @@ rectObj.prototype.draw = function(){
     if(this.type) ctx2.clearRect(this.x,this.y,this.width,this.height);
     else 
     {
+        //************the first version --- with jag but more reliable ..?*************
+        // ctx2.save();
+        // ctx2.beginPath();
+        // ctx2.arc(this.x + this.width/2,this.y + this.width/2,this.width/2,0,2*Math.PI,false);
+
+        // ctx2.clip();   
+        // ctx2.clearRect(0,0,canW,canH);
+        // ctx2.restore();
+        //****************************************************************************
+
+        //************the second version --- without jag on chrome but it seems...0 0*************
         ctx2.save();
+        ctx2.fillStyle = "rgba(255,255,255,0)";
+        ctx2.fillRect(0,0,canW,canH);
+        ctx2.globalCompositeOperation = "destination-out";
         ctx2.beginPath();
         ctx2.arc(this.x + this.width/2,this.y + this.width/2,this.width/2,0,2*Math.PI,false);
-
-        ctx2.clip();   
-        ctx2.clearRect(0,0,canW,canH);
+        ctx2.closePath();
+        ctx2.fillStyle="#fff";
+        ctx2.fill();
         ctx2.restore();
+        //****************************************************************************
     }
     this.drag.init(this);
     this.drag.draw();
@@ -455,6 +481,7 @@ previewObj.prototype.draw = function(x,y){
         x=y;
         y=canW-tmp-rw;
     }
+    console.log(x,l,x-l,y,t,y-t);
     bigctx.drawImage(initimage,(x-l)*scalex,(y-t)*scaley,rw*scalex,rh*scaley,0,0,view_big.width,view_big.height);
     midctx.drawImage(initimage,(x-l)*scalex,(y-t)*scaley,rw*scalex,rh*scaley,0,0,view_mid.width,view_mid.height);
     smallctx.drawImage(initimage,(x-l)*scalex,(y-t)*scaley,rw*scalex,rh*scaley,0,0,view_small.width,view_small.height);
